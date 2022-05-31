@@ -7,9 +7,22 @@ class Account {
   currentBalance() {
     return this.balance;
   }
+
   creditBalance(amount) {
-    this.balance = this.balance + amount;
+    this.balance += amount;
     return this.currentBalance();
+  }
+
+  depositBalance(amount) {
+    if (this.balance < amount) {
+      return 'inSufficient balance...';
+    }
+    this.balance -= amount;
+    return this.currentBalance();
+  }
+
+  accInfo() {
+    return this.acNumber + ' : ' + this.name + ' : ' + this.balance;
   }
 }
 exports.Account = Account; 
