@@ -3,6 +3,8 @@
 /* eslint-disable no-multiple-empty-lines */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable no-unused-vars */
+
+const { html } = require('../../projects/htmlFrameWork/src/generateHtml.js');
 class Vehicle {
   constructor(owner, vehicleNumber, regDate) {
     this.owner = owner;
@@ -32,11 +34,11 @@ class Person {
     return this.age > 18;
   }
 }
+
 const person1 = new Person('ankamma', 20, 'guntur');
 const person2 = new Person('abin', 21, 'ponnur');
 const person3 = new Person('jhon', 26, 'bza');
 const person4 = new Person('ahon', 16, 'hyd');
-
 
 // [person1, person2, person3].filter(
 //   person => person.isEligibleForLicense()).map(
@@ -57,7 +59,6 @@ class Circle {
     return 2 * Math.PI * this.radius;
   }
 }
-
 
 class Iterator {
   constructor(list) {
@@ -92,10 +93,14 @@ class Triangle {
       (this.a.x * this.b.y + this.b.x * this.c.y + this.c.x * this.a.y) -
       (this.b.x * this.a.y + this.c.x * this.b.y + this.a.x * this.c.y);
   }
+  // perimeter() {
+
+  // }
 }
 
 // const x = new Triangle({ x: 0, y: 0 }, { x: 3, y: 3 }, { x: 0, y: 5 });
 // console.log(x.area());
+// console.log(x.perimeter());
 
 class flag {
   constructor(flag, count) {
@@ -112,8 +117,74 @@ class flag {
 }
 
 // const option = new flag('-n', 10);
-
 // console.log(option.isValidFlag());
+
+const sum = (total, score) => {
+  return total + score;
+};
+
+class Score {
+  constructor(subject, score) {
+    this.subject = subject;
+    this.score = score;
+  }
+}
+
+class Student {
+  constructor(name, age, marks) {
+    this.name = name;
+    this.age = age;
+    this.marks = marks;
+  }
+
+  average() {
+    return this.marks.average();
+  }
+
+  percentage() {
+    return this.average() * 100;
+  }
+
+  score(subject) {
+    return this.marks[subject];
+  }
+}
+
+
+
+const john = new Student('john', 12, { maths: 60 });
 
 
 //create class that will take tag name attributes value
+// when invoke method ,that will give formated html
+
+class Html {
+  constructor(tagName, attrib, content) {
+    this.tagName = tagName;
+    this.attrib = attrib;
+    this.content = content;
+  }
+
+  tag() {
+    return `<${this.tagName} ${this.attrib}>${this.content}</${this.tagName}>`;
+  }
+
+}
+class Attribute {
+  constructor(property, value) {
+    this.property = property;
+    this.value = value;
+  }
+
+  attr() {
+    return `${this.property}="${this.value}"`;
+  }
+}
+
+const classAttr = new Attribute('class', 'page');
+const div = new Html('div', classAttr.attr(), 'hai');
+
+div.tag();
+
+//type price kgs
+//paddy 1360/75kgs  10000

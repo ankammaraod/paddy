@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers */
 
-const { html } = require('../projects/htmlFrameWork/src/generateHtml.js');
+const { html } = require('../../projects/htmlFrameWork/src/generateHtml.js');
 const fs = require('fs');
 
 class Style {
@@ -17,7 +17,7 @@ class Style {
   }
 }
 
-class colors {
+class Color {
   constructor(red, green, blue) {
     this.red = red;
     this.green = green;
@@ -27,12 +27,11 @@ class colors {
   rgb() {
     return `rgb(${this.red}, ${this.green}, ${this.blue})`;
   }
-
 }
 
-const toHtml = () => {
+const line = () => {
   const style = new Style();
-  const color = new colors(randInt(256), randInt(256), randInt(256));
+  const color = new Color(randInt(256), randInt(256), randInt(256));
 
   style.addAttrib('border', `1px solid ${color.rgb()}`);
   style.addAttrib('position', 'absolute');
@@ -45,14 +44,14 @@ const toHtml = () => {
 
 const randInt = (num) => Math.floor(Math.random() * num);
 
-const lines = () => {
-  const divs = Array(500).fill(1).map(() => toHtml()).join('');
+const circle = () => {
+  const lines = Array(600).fill(1).map(() => line()).join('');
 
   const dom =
     ['html', {},
       ['head', {},
         ['title', {}, 'circle'],
-        ['meta', { 'http-equiv': 'refresh', content: '1' }]
+        ['meta', { 'http-equiv': 'refresh', content: 1 }]
       ],
       ['body',
         {
@@ -64,7 +63,7 @@ const lines = () => {
             'align-items': 'center',
             margin: '0px'
           }
-        }, divs
+        }, lines
       ]
     ];
 
@@ -72,8 +71,9 @@ const lines = () => {
 };
 
 const startCircle = () => {
-  const interval = setInterval(() => lines(), 1000);
+  const interval = setInterval(() => circle(), 1000);
   setTimeout(() => clearInterval(interval), 30000);
 };
 
 startCircle();
+// circle();

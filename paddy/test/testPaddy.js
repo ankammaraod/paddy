@@ -3,7 +3,7 @@ const assert = require('assert');
 
 describe('gross', () => {
   it('should give how much money to the given quantity', () => {
-    //quantity shouldbe kgs
+    //quantity should be kgs
     const paddy1 = new Paddy(75, 1360);
     const paddy2 = new Paddy(150, 1360);
     assert.deepStrictEqual(paddy1.gross(), 1360);

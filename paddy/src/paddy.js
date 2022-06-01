@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 class Paddy {
   //quantity should be kgs 75kgs of paddy cost is 1360
 
