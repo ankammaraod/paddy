@@ -1,59 +1,42 @@
 /* eslint-disable no-console */
 const { EventNotifier } = require('./eventNotifier.js');
+const { Field } = require('./field.js');
 const fs = require('fs');
 
-const openGateWalls = () => console.log('removing gateWalls');
-const startDrainageMotor = () => console.log('drainage motor started');
-const closeGateWalls = () => console.log('gatewalls are closed');
-const startMotor = () => console.log('started motor at river');
-const harvestCrop = () => console.log('harvested the crop');
-const callBrokers = () => console.log('inform to brokers about crop');
-const callMillers = () => console.log('inform to millers about crop');
-
-// const fileBasedEventGenerator = (notifier) => {
-//   fs.watchFile('./events.txt', (prev, curr) => {
-//     const content = fs.readFileSync('./events.txt', 'utf-8');
-//     const event = content.split('\n').slice(-1);
-//     console.clear();
-//     notifier.notify(event);
-//   });
-// };
-
-const decideActions = (notifier, parsedContents) => {
-  if (parsedContents['humidity'] > 60) {
+const decideActions = (notifier, field, parsedContents) => {
+  if (field.isHumidityRaised(parsedContents['humidity'])) {
     notifier.notify('humidity-raised');
   }
-  if (parsedContents['cropColor'] === 'yellow') {
-    notifier.notify('cropInYellowColor');
-  }
-  if (parsedContents['temperature'] > 40) {
+  if (field.isTemperatureRaised(parsedContents['temperature'])) {
     notifier.notify('temperature-raised');
+  }
+  if (field.isCropColorYellow(parsedContents['cropColor'])) {
+    notifier.notify('cropInYellowColor');
   }
 };
 
-const fileBasedEventGenerator = (notifier) => {
+const fileBasedEventGenerator = (notifier, field) => {
   fs.watchFile('./events.json', (curr, prev) => {
     const content = fs.readFileSync('./events.json', 'utf-8');
     const parsedContents = JSON.parse(content);
     console.clear();
-    decideActions(notifier, parsedContents);
+    decideActions(notifier, field, parsedContents);
   });
 };
 
 const main = () => {
   const eventNotifier = new EventNotifier();
+  const field = new Field(30, 30, 'green');
 
-  eventNotifier.register('humidity-raised', openGateWalls);
-  eventNotifier.register('humidity-raised', startDrainageMotor);
+  eventNotifier.register('humidity-raised', () => field.openGateWalls);
+  eventNotifier.register('humidity-raised', () => field.startDrainageMotor);
+  eventNotifier.register('temperature-raised', () => field.closeGateWalls);
+  eventNotifier.register('temperature-raised', () => field.startMotor);
+  eventNotifier.register('cropInYellowColor', () => field.harvestCrop);
+  eventNotifier.register('cropInYellowColor', () => field.callBrokers);
+  eventNotifier.register('cropInYellowColor', () => field.callMillers);
 
-  eventNotifier.register('temperature-raised', closeGateWalls);
-  eventNotifier.register('temperature-raised', startMotor);
-
-  eventNotifier.register('cropInYellowColor', harvestCrop);
-  eventNotifier.register('cropInYellowColor', callBrokers);
-  eventNotifier.register('cropInYellowColor', callMillers);
-
-  fileBasedEventGenerator(eventNotifier);
+  fileBasedEventGenerator(eventNotifier, field);
 };
 
 main();
