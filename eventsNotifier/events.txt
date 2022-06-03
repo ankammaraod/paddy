@@ -1,0 +1,7 @@
+temperature-raised
+CropInYellowColor
+humidity-raised
+temperature-raised
+CropInYellowColor
+humidity-raised
+humidity-raised
